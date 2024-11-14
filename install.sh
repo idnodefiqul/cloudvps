@@ -6,6 +6,7 @@ git clone --quiet https://github.com/KangQull/cloudsinstaller.git
 # Move required files to the home directory
 mv cloudsinstaller/menuclouds ~/
 mv cloudsinstaller/removenextcloud ~/
+mv cloudsinstaller/settings3storage ~/
 mv cloudsinstaller/removeowncloud ~/
 mv cloudsinstaller/uploadsetting ~/
 
@@ -15,12 +16,14 @@ rm -rf cloudsinstaller
 # Make the scripts executable
 chmod +x ~/menuclouds
 chmod +x ~/removenextcloud
+chmod +x ~/settings3storage
 chmod +x ~/removeowncloud
 chmod +x ~/uploadsetting
 
 # Move scripts to /usr/local/bin for easy access
 mv ~/menuclouds /usr/local/bin
 mv ~/removenextcloud /usr/local/bin
+mv ~/settings3storage /usr/local/bin
 mv ~/removeowncloud /usr/local/bin
 mv ~/uploadsetting /usr/local/bin
 
