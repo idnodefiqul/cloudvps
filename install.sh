@@ -1,21 +1,31 @@
 #!/bin/bash
+
+# Clone the repository quietly
 git clone --quiet https://github.com/KangQull/cloudsinstaller.git
-#remove
+
+# Move required files to the home directory
 mv cloudsinstaller/menuclouds ~/
 mv cloudsinstaller/removenextcloud ~/
 mv cloudsinstaller/removeowncloud ~/
 mv cloudsinstaller/uploadsetting ~/
+
+# Remove the cloned directory
 rm -rf cloudsinstaller
-chmod +x menuclouds
-chmod +x removenextcloud
-chmod +x removeowncloud
-chmod +x uploadsetting
-mv menuclouds /usr/local/bin
-cat <<EOF >> ~/.bashrc
-menuclouds
-EOF
-mv removenextcloud /usr/local/bin
-mv removeowncloud /usr/local/bin
-mv uploadsetting /usr/local/bin
-#memulai install
+
+# Make the scripts executable
+chmod +x ~/menuclouds
+chmod +x ~/removenextcloud
+chmod +x ~/removeowncloud
+chmod +x ~/uploadsetting
+
+# Move scripts to /usr/local/bin for easy access
+mv ~/menuclouds /usr/local/bin
+mv ~/removenextcloud /usr/local/bin
+mv ~/removeowncloud /usr/local/bin
+mv ~/uploadsetting /usr/local/bin
+
+# Add 'menuclouds' command to bashrc for auto-launch
+echo "menuclouds" >> ~/.bashrc
+
+# Start the installation
 menuclouds
