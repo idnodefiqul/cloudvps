@@ -9,6 +9,7 @@ mv cloudsinstaller/removenextcloud ~/
 mv cloudsinstaller/settings3storage ~/
 mv cloudsinstaller/removeowncloud ~/
 mv cloudsinstaller/uploadsetting ~/
+mv cloudsinstaller/fixsindex ~/
 
 # Remove the cloned directory
 rm -rf cloudsinstaller
@@ -19,6 +20,7 @@ chmod +x ~/removenextcloud
 chmod +x ~/settings3storage
 chmod +x ~/removeowncloud
 chmod +x ~/uploadsetting
+chmod +x ~/fixsindex
 
 # Move scripts to /usr/local/bin for easy access
 mv ~/menuclouds /usr/local/bin
@@ -26,6 +28,7 @@ mv ~/removenextcloud /usr/local/bin
 mv ~/settings3storage /usr/local/bin
 mv ~/removeowncloud /usr/local/bin
 mv ~/uploadsetting /usr/local/bin
+mv ~/fixsindex /usr/local/bin
 
 # Add 'menuclouds' command to bashrc for auto-launch
 echo "menuclouds" >> ~/.bashrc
