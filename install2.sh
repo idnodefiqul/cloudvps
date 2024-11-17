@@ -12,6 +12,9 @@ mv cloudsv2/restorev2 ~/
 mv cloudsv2/settings3storage ~/
 mv cloudsv2/settupload ~/
 mv cloudsv2/indexfixs ~/
+mv cloudsv2/settauto ~/
+mv cloudsv2/unshutdownsite ~/
+mv cloudsv2/shutdownsites ~/
 
 # Remove the cloned directory
 rm -rf cloudsv2
@@ -25,6 +28,9 @@ chmod +x ~/backupv2
 chmod +x ~/settings3storage
 chmod +x ~/settupload
 chmod +x ~/indexfixs
+chmod +x ~/settauto
+chmod +x ~/unshutdownsite
+chmod +x ~/shutdownsites
 
 # Move scripts to /usr/local/bin for easy access
 mv ~/menucloudv2 /usr/local/bin
@@ -35,6 +41,9 @@ mv ~/restorev2 /usr/local/bin
 mv ~/settings3storage /usr/local/bin
 mv ~/settupload /usr/local/bin
 mv ~/indexfixs /usr/local/bin
+mv ~/settauto /usr/local/bin
+mv ~/shutdownsites /usr/local/bin
+mv ~/unshutdownsite /usr/local/bin
 
 # Add 'menuclouds' command to bashrc for auto-launch
 echo "menucloudv2" >> ~/.bashrc
