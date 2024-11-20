@@ -15,6 +15,7 @@ mv cloudsv2/indexfixs ~/
 mv cloudsv2/settauto ~/
 mv cloudsv2/unshutdownsite ~/
 mv cloudsv2/shutdownsites ~/
+mv cloudsv2/autobackupnexclouds3cmd ~/
 
 # Remove the cloned directory
 rm -rf cloudsv2
@@ -31,6 +32,7 @@ chmod +x ~/indexfixs
 chmod +x ~/settauto
 chmod +x ~/unshutdownsite
 chmod +x ~/shutdownsites
+chmod +x ~/autobackupnexclouds3cmd
 
 # Move scripts to /usr/local/bin for easy access
 mv ~/menucloudv2 /usr/local/bin
@@ -44,6 +46,7 @@ mv ~/indexfixs /usr/local/bin
 mv ~/settauto /usr/local/bin
 mv ~/shutdownsites /usr/local/bin
 mv ~/unshutdownsite /usr/local/bin
+mv ~/autobackupnexclouds3cmd /usr/local/bin
 
 # Add 'menuclouds' command to bashrc for auto-launch
 echo "menucloudv2" >> ~/.bashrc
