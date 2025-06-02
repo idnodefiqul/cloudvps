@@ -279,10 +279,10 @@ install_webserver() {
         # Create virtual host
         cat > /etc/apache2/sites-available/nextcloud.conf << EOF
 <VirtualHost *:80>
-    DocumentRoot /var/www/nextcloud
+    DocumentRoot /var/www/html
     ServerName $DOMAIN
     
-    <Directory /var/www/nextcloud/>
+    <Directory /var/www/html/>
         Require all granted
         AllowOverride All
         Options FollowSymLinks MultiViews
@@ -309,7 +309,7 @@ EOF
 server {
     listen 80;
     server_name $DOMAIN;
-    root /var/www/nextcloud;
+    root /var/www/html;
     index index.php index.html index.htm;
     
     client_max_body_size 200M;
@@ -352,9 +352,9 @@ install_nextcloud() {
     unzip latest.zip
     
     print_status "Installing Nextcloud..."
-    mv nextcloud /var/www/
-    chown -R www-data:www-data /var/www/nextcloud
-    chmod -R 755 /var/www/nextcloud
+    mv nextcloud/* /var/www/html/
+    chown -R www-data:www-data /var/www/html/
+    chmod -R 755 /var/www/html/
 }
 
 # Configure SSL with Let's Encrypt
@@ -415,7 +415,7 @@ show_summary() {
         echo "- SSL: Disabled"
     fi
     echo "- PHP Version: $PHP_VERSION"
-    echo "- Nextcloud Path: /var/www/nextcloud"
+    echo "- Nextcloud Path: /var/www/html/"
     echo
     echo -e "${GREEN}Akses Nextcloud:${NC}"
     if [[ $ENABLE_SSL == true ]]; then
