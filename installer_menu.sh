@@ -46,6 +46,7 @@ show_banner() {
     echo -e "  ${ARROW} Auto SSL certificate with Let's Encrypt"
     echo -e "  ${ARROW} Production-ready Apache configuration"
     echo -e "  ${ARROW} Complete uninstall functionality"
+    echo -e "  ${ARROW} Backup and restore system"
     echo ""
 }
 
