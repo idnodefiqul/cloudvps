@@ -31,10 +31,10 @@ LOCK="🔒"
 show_banner() {
     clear
     echo -e "${PURPLE}${BOLD}"
-    echo "═══════════════════════════════════════════════════════════════════════════════"
+    echo "══════════════════════════════════════════════════════════════════════════"
     echo "                    ${CLOUD} NEXTCLOUD PROFESSIONAL INSTALLER ${CLOUD}"
     echo "                                  Version 2.0"
-    echo "═══════════════════════════════════════════════════════════════════════════════"
+    echo "══════════════════════════════════════════════════════════════════════════"
     echo -e "${NC}"
     echo -e "${CYAN}${BOLD}Features:${NC}"
     echo -e "  ${ARROW} Automated installation with zero configuration"
@@ -73,11 +73,11 @@ show_warning() {
 show_info_box() {
     local title=$1
     local content=$2
-    echo -e "${WHITE}${BOLD}╭─────────────────────────────────────────────────────────────────────────────╮${NC}"
+    echo -e "${WHITE}${BOLD}╭────────────────────────────────────────────────────────────────────╮${NC}"
     echo -e "${WHITE}${BOLD}│ ${STAR} ${title}${NC}$(printf "%*s" $((74 - ${#title})) "")${WHITE}${BOLD}│${NC}"
-    echo -e "${WHITE}${BOLD}├─────────────────────────────────────────────────────────────────────────────┤${NC}"
+    echo -e "${WHITE}${BOLD}├────────────────────────────────────────────────────────────────────┤${NC}"
     echo -e "${WHITE}${BOLD}│${NC} ${content}$(printf "%*s" $((74 - ${#content})) "")${WHITE}${BOLD}│${NC}"
-    echo -e "${WHITE}${BOLD}╰─────────────────────────────────────────────────────────────────────────────╯${NC}"
+    echo -e "${WHITE}${BOLD}╰────────────────────────────────────────────────────────────────────╯${NC}"
     echo ""
 }
 
@@ -111,9 +111,9 @@ show_menu() {
     shift
     local options=("$@")
     
-    echo -e "${PURPLE}${BOLD}╭─────────────────────────────────────────────────────────────────────────────╮${NC}"
+    echo -e "${PURPLE}${BOLD}╭────────────────────────────────────────────────────────────────────╮${NC}"
     echo -e "${PURPLE}${BOLD}│ ${title}${NC}$(printf "%*s" $((74 - ${#title})) "")${PURPLE}${BOLD}│${NC}"
-    echo -e "${PURPLE}${BOLD}╰─────────────────────────────────────────────────────────────────────────────╯${NC}"
+    echo -e "${PURPLE}${BOLD}╰────────────────────────────────────────────────────────────────────╯${NC}"
     
     for i in "${!options[@]}"; do
         echo -e "  ${YELLOW}${BOLD}$((i+1)))${NC} ${options[$i]}"
@@ -226,14 +226,14 @@ main() {
     
     # Installation confirmation
     echo ""
-    echo -e "${WHITE}${BOLD}╭─────────────────────────────────────────────────────────────────────────────╮${NC}"
+    echo -e "${WHITE}${BOLD}╭────────────────────────────────────────────────────────────────────╮${NC}"
     echo -e "${WHITE}${BOLD}│ ${STAR} INSTALLATION SUMMARY${NC}$(printf "%*s" 56 "")${WHITE}${BOLD}│${NC}"
-    echo -e "${WHITE}${BOLD}├─────────────────────────────────────────────────────────────────────────────┤${NC}"
+    echo -e "${WHITE}${BOLD}├────────────────────────────────────────────────────────────────────┤${NC}"
     echo -e "${WHITE}${BOLD}│${NC} Domain        : ${CYAN}$DOMAIN${NC}$(printf "%*s" $((63 - ${#DOMAIN})) "")${WHITE}${BOLD}│${NC}"
     echo -e "${WHITE}${BOLD}│${NC} Database      : ${CYAN}$DB_ENGINE${NC}$(printf "%*s" $((63 - ${#DB_ENGINE})) "")${WHITE}${BOLD}│${NC}"
     echo -e "${WHITE}${BOLD}│${NC} PHP Version   : ${CYAN}$PHP_VERSION${NC}$(printf "%*s" $((63 - ${#PHP_VERSION})) "")${WHITE}${BOLD}│${NC}"
     echo -e "${WHITE}${BOLD}│${NC} SSL Certificate: ${CYAN}Let's Encrypt (Auto)${NC}$(printf "%*s" 43 "")${WHITE}${BOLD}│${NC}"
-    echo -e "${WHITE}${BOLD}╰─────────────────────────────────────────────────────────────────────────────╯${NC}"
+    echo -e "${WHITE}${BOLD}╰────────────────────────────────────────────────────────────────────╯${NC}"
     echo ""
     
     read -p "$(echo -e ${YELLOW}${BOLD}Lanjutkan instalasi? [Y/n]: ${NC})" CONFIRM
@@ -339,14 +339,14 @@ EOF
     
     # Install SSL
     show_progress "Installing SSL certificate with Let's Encrypt"
-    certbot --apache -d $DOMAIN -d www.$DOMAIN --non-interactive --agree-tos -m admin@$DOMAIN &>/dev/null
+    certbot --apache -d $DOMAIN -d www.$DOMAIN --non-interactive --agree-tos -m admin@$DOMAIN
     show_success "SSL certificate installed"
     
     # Installation complete
     echo ""
-    echo -e "${GREEN}${BOLD}╭─────────────────────────────────────────────────────────────────────────────╮${NC}"
+    echo -e "${GREEN}${BOLD}╭────────────────────────────────────────────────────────────────────╮${NC}"
     echo -e "${GREEN}${BOLD}│ ${STAR} INSTALLATION COMPLETED SUCCESSFULLY! ${STAR}${NC}$(printf "%*s" 37 "")${GREEN}${BOLD}│${NC}"
-    echo -e "${GREEN}${BOLD}╰─────────────────────────────────────────────────────────────────────────────╯${NC}"
+    echo -e "${GREEN}${BOLD}╰────────────────────────────────────────────────────────────────────╯${NC}"
     echo ""
     echo -e "${CYAN}${BOLD}🌐 Access your Nextcloud installation:${NC}"
     echo -e "   ${ARROW} HTTP:  ${WHITE}http://$DOMAIN${NC}"
