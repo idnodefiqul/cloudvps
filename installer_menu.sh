@@ -34,10 +34,10 @@ WARNING="⚠"
 show_banner() {
     clear
     echo -e "${PURPLE}${BOLD}"
-    echo "═══════════════════════════════════════════════════════════════════════════════"
+    echo "══════════════════════════════════════════════════════════════════════"
     echo "                    ${CLOUD} NEXTCLOUD PROFESSIONAL INSTALLER ${CLOUD}"
     echo "                                  Version 2.1"
-    echo "═══════════════════════════════════════════════════════════════════════════════"
+    echo "══════════════════════════════════════════════════════════════════════"
     echo -e "${NC}"
     echo -e "${CYAN}${BOLD}Features:${NC}"
     echo -e "  ${ARROW} Automated installation with zero configuration"
@@ -77,11 +77,11 @@ show_warning() {
 show_info_box() {
     local title=$1
     local content=$2
-    echo -e "${WHITE}${BOLD}╭─────────────────────────────────────────────────────────────────────────────╮${NC}"
+    echo -e "${WHITE}${BOLD}╭───────────────────────────────────────────────────────────────────╮${NC}"
     echo -e "${WHITE}${BOLD}│ ${STAR} ${title}${NC}$(printf "%*s" $((74 - ${#title})) "")${WHITE}${BOLD}│${NC}"
-    echo -e "${WHITE}${BOLD}├─────────────────────────────────────────────────────────────────────────────┤${NC}"
+    echo -e "${WHITE}${BOLD}├───────────────────────────────────────────────────────────────────┤${NC}"
     echo -e "${WHITE}${BOLD}│${NC} ${content}$(printf "%*s" $((74 - ${#content})) "")${WHITE}${BOLD}│${NC}"
-    echo -e "${WHITE}${BOLD}╰─────────────────────────────────────────────────────────────────────────────╯${NC}"
+    echo -e "${WHITE}${BOLD}╰───────────────────────────────────────────────────────────────────╯${NC}"
     echo ""
 }
 
@@ -115,9 +115,9 @@ show_menu() {
     shift
     local options=("$@")
     
-    echo -e "${PURPLE}${BOLD}╭─────────────────────────────────────────────────────────────────────────────╮${NC}"
+    echo -e "${PURPLE}${BOLD}╭────────────────────────────────────────────────────────────────────╮${NC}"
     echo -e "${PURPLE}${BOLD}│ ${title}${NC}$(printf "%*s" $((74 - ${#title})) "")${PURPLE}${BOLD}│${NC}"
-    echo -e "${PURPLE}${BOLD}╰─────────────────────────────────────────────────────────────────────────────╯${NC}"
+    echo -e "${PURPLE}${BOLD}╰────────────────────────────────────────────────────────────────────╯${NC}"
     
     for i in "${!options[@]}"; do
         echo -e "  ${YELLOW}${BOLD}$((i+1)))${NC} ${options[$i]}"
@@ -159,16 +159,18 @@ show_main_menu() {
     while true; do
         show_banner
         
-        echo -e "${WHITE}${BOLD}╭─────────────────────────────────────────────────────────────────────────────╮${NC}"
-        echo -e "${WHITE}${BOLD}│ ${STAR} MAIN MENU${NC}$(printf "%*s" 64 "")${WHITE}${BOLD}│${NC}"
-        echo -e "${WHITE}${BOLD}╰─────────────────────────────────────────────────────────────────────────────╯${NC}"
+        echo -e "${PURPLE}${BOLD}╭────────────────────────────────────────────────────────────────────╮${NC}"
+        echo -e "${WHITE}${BOLD}│ ${STAR}        MAIN MENU${NC}"
+        echo -e "${PURPLE}${BOLD}╰────────────────────────────────────────────────────────────────────╯${NC}"
         echo ""
         echo -e "  ${GREEN}${BOLD}1)${NC} ${CLOUD} Install Nextcloud"
         echo -e "  ${RED}${BOLD}2)${NC} ${TRASH} Uninstall Nextcloud (Complete Removal)"
-        echo -e "  ${YELLOW}${BOLD}3)${NC} ${CROSS} Exit"
+        echo -e "  ${BLUE}${BOLD}3)${NC} 💾 Backup Nextcloud"
+        echo -e "  ${PURPLE}${BOLD}4)${NC} 📥 Restore Nextcloud"
+        echo -e "  ${YELLOW}${BOLD}5)${NC} ${CROSS} Exit"
         echo ""
         
-        read -p "$(echo -e ${CYAN}${BOLD}Pilih opsi [1-3]: ${NC})" MENU_CHOICE
+        read -p "$(echo -e ${CYAN}${BOLD}Pilih opsi [1-5]: ${NC})" MENU_CHOICE
         
         case $MENU_CHOICE in
             1)
@@ -178,24 +180,88 @@ show_main_menu() {
                 uninstall_nextcloud
                 ;;
             3)
+                backup_nextcloud
+                ;;
+            4)
+                restore_nextcloud
+                ;;
+            5)
                 echo -e "${GREEN}${BOLD}Terima kasih telah menggunakan Professional Nextcloud Installer!${NC}"
                 exit 0
                 ;;
             *)
-                show_error "Pilihan tidak valid. Silakan pilih 1, 2, atau 3."
+                show_error "Pilihan tidak valid. Silakan pilih 1-5."
                 sleep 2
                 ;;
         esac
     done
 }
 
+backup_nextcloud() {
+    show_banner
+    
+    echo -e "${BLUE}${BOLD}╭───────────────────────────────────────────────────────────────────╮${NC}"
+    echo -e "${BLUE}${BOLD}│ 💾 NEXTCLOUD BACKUP SYSTEM${NC}$(printf "%*s" 49 "")${BLUE}${BOLD}│${NC}"
+    echo -e "${BLUE}${BOLD}╰───────────────────────────────────────────────────────────────────╯${NC}"
+    echo ""
+    NEXTCLOUD_DIR="/var/www/html"
+    # Direktori penyimpanan backup
+    BACKUP_DIR="/var/backups/nextcloud"
+    BACKUPDIR="/var/backups/"
+    # File konfigurasi Nextcloud
+    CONFIG_FILE="$NEXTCLOUD_DIR/config/config.php"
+    # Tanggal backup
+    DATE=$(date +%Y%m%d_%H%M%S)
+
+    # Membuat direktori backup jika belum ada
+    mkdir -p $BACKUP_DIR
+
+    # Fungsi untuk membaca parameter dari file konfigurasi
+    get_config_value() {
+       local key=$1
+       local value=$(grep "'$key'" $CONFIG_FILE | awk -F "=> " '{print $2}' | tr -d "', ")
+       echo $value
+    }
+
+   # Membaca informasi database dari config.php
+   DB_NAME=$(get_config_value "dbname")
+   DB_USER=$(get_config_value "dbuser")
+   DB_PASS=$(get_config_value "dbpassword")
+   cat <<EOF > "$HOME/.my.cnf"
+   [client]
+   user=$DB_USER
+   password=$DB_PASS
+   EOF
+   # Pastikan semua parameter ditemukan
+   if [[ -z "$DB_NAME" || -z "$DB_USER" || -z "$DB_PASS" ]]; then
+       echo "Gagal membaca informasi database dari $CONFIG_FILE. Pastikan file konfigurasi valid."
+       exit 1
+   fi
+
+   echo "Mencadangkan file Nextcloud..."
+   tar -czvf $BACKUP_DIR/nextcloud_files_$DATE.tar.gz -C /var/www/html .
+
+   echo "Mencadangkan database Nextcloud..."
+   mysql -u root -e "GRANT PROCESS ON *.* TO '$DB_USER'@'localhost';"
+   mysql -u root -e "FLUSH PRIVILEGES;"
+   mysql -u root -e "SHOW GRANTS FOR '$DB_USER'@'localhost';"
+   mysqldump "$DB_NAME" > $BACKUP_DIR/nextcloud_db_$DATE.sql
+
+   echo "Mencadangkan konfigurasi Apache..."
+   cp /etc/apache2/sites-available/nextcloud.conf $BACKUP_DIR/nextcloud_apache_$DATE.conf
+
+   echo -e "${GREEN}${BOLD}Backup completed successfully, Cek File backup di $BACKUP_DIR ${STAR}${NC}"
+   echo ""
+   read -p "$(echo -e ${YELLOW}${BOLD}Press Enter to return to main menu...${NC})"
+}
+
 # Uninstall function
 uninstall_nextcloud() {
     show_banner
     
-    echo -e "${RED}${BOLD}╭─────────────────────────────────────────────────────────────────────────────╮${NC}"
+    echo -e "${RED}${BOLD}╭────────────────────────────────────────────────────────────────────╮${NC}"
     echo -e "${RED}${BOLD}│ ${TRASH} NEXTCLOUD COMPLETE UNINSTALL${NC}$(printf "%*s" 45 "")${RED}${BOLD}│${NC}"
-    echo -e "${RED}${BOLD}╰─────────────────────────────────────────────────────────────────────────────╯${NC}"
+    echo -e "${RED}${BOLD}╰────────────────────────────────────────────────────────────────────╯${NC}"
     echo ""
     
     show_warning "PERINGATAN: Ini akan menghapus SEMUA komponen Nextcloud!"
@@ -298,9 +364,9 @@ uninstall_nextcloud() {
     
     # Uninstall complete
     echo ""
-    echo -e "${GREEN}${BOLD}╭─────────────────────────────────────────────────────────────────────────────╮${NC}"
+    echo -e "${GREEN}${BOLD}╭──────────────────────────────────────────────────────────────────╮${NC}"
     echo -e "${GREEN}${BOLD}│ ${CHECK} NEXTCLOUD UNINSTALL COMPLETED SUCCESSFULLY! ${CHECK}${NC}$(printf "%*s" 32 "")${GREEN}${BOLD}│${NC}"
-    echo -e "${GREEN}${BOLD}╰─────────────────────────────────────────────────────────────────────────────╯${NC}"
+    echo -e "${GREEN}${BOLD}╰──────────────────────────────────────────────────────────────────╯${NC}"
     echo ""
     echo -e "${CYAN}${BOLD}📋 Uninstall Summary:${NC}"
     echo -e "   ${ARROW} All Nextcloud files removed"
@@ -392,14 +458,14 @@ install_nextcloud() {
     
     # Installation confirmation
     echo ""
-    echo -e "${WHITE}${BOLD}╭─────────────────────────────────────────────────────────────────────────────╮${NC}"
+    echo -e "${WHITE}${BOLD}╭────────────────────────────────────────────────────────────────────╮${NC}"
     echo -e "${WHITE}${BOLD}│ ${STAR} INSTALLATION SUMMARY${NC}$(printf "%*s" 56 "")${WHITE}${BOLD}│${NC}"
-    echo -e "${WHITE}${BOLD}├─────────────────────────────────────────────────────────────────────────────┤${NC}"
+    echo -e "${WHITE}${BOLD}├────────────────────────────────────────────────────────────────────┤${NC}"
     echo -e "${WHITE}${BOLD}│${NC} Domain        : ${CYAN}$DOMAIN${NC}$(printf "%*s" $((63 - ${#DOMAIN})) "")${WHITE}${BOLD}│${NC}"
     echo -e "${WHITE}${BOLD}│${NC} Database      : ${CYAN}$DB_ENGINE${NC}$(printf "%*s" $((63 - ${#DB_ENGINE})) "")${WHITE}${BOLD}│${NC}"
     echo -e "${WHITE}${BOLD}│${NC} PHP Version   : ${CYAN}$PHP_VERSION${NC}$(printf "%*s" $((63 - ${#PHP_VERSION})) "")${WHITE}${BOLD}│${NC}"
     echo -e "${WHITE}${BOLD}│${NC} SSL Certificate: ${CYAN}Let's Encrypt (Auto)${NC}$(printf "%*s" 43 "")${WHITE}${BOLD}│${NC}"
-    echo -e "${WHITE}${BOLD}╰─────────────────────────────────────────────────────────────────────────────╯${NC}"
+    echo -e "${WHITE}${BOLD}╰────────────────────────────────────────────────────────────────────╯${NC}"
     echo ""
     
     read -p "$(echo -e ${YELLOW}${BOLD}Lanjutkan instalasi? [Y/n]: ${NC})" CONFIRM
@@ -483,9 +549,9 @@ EOF
     
     # Save installation data
     cat <<EOF > ~/.nextcloud_install_data.txt
-═══════════════════════════════════════════════════════════════════════════════
+══════════════════════════════════════════════════════════════════════
 ${CLOUD} NEXTCLOUD INSTALLATION DATA ${CLOUD}
-═══════════════════════════════════════════════════════════════════════════════
+══════════════════════════════════════════════════════════════════════
 Installation Date    : $(date)
 Domain Name         : $DOMAIN
 Database Engine     : $DB_ENGINE
@@ -494,9 +560,9 @@ Database User       : $DB_USER
 Database Password   : $DB_PASS
 PHP Version         : $PHP_VERSION
 SSL Certificate     : Let's Encrypt
-═══════════════════════════════════════════════════════════════════════════════
+═════════════════════════════════════════════════════════════════════
 ${LOCK} KEEP THIS FILE SECURE - Contains sensitive information ${LOCK}
-═══════════════════════════════════════════════════════════════════════════════
+═════════════════════════════════════════════════════════════════════
 EOF
     chmod 600 ~/.nextcloud_install_data.txt
     
@@ -511,9 +577,9 @@ EOF
     
     # Installation complete
     echo ""
-    echo -e "${GREEN}${BOLD}╭─────────────────────────────────────────────────────────────────────────────╮${NC}"
+    echo -e "${GREEN}${BOLD}╭───────────────────────────────────────────────────────────────────╮${NC}"
     echo -e "${GREEN}${BOLD}│ ${STAR} INSTALLATION COMPLETED SUCCESSFULLY! ${STAR}${NC}$(printf "%*s" 37 "")${GREEN}${BOLD}│${NC}"
-    echo -e "${GREEN}${BOLD}╰─────────────────────────────────────────────────────────────────────────────╯${NC}"
+    echo -e "${GREEN}${BOLD}╰───────────────────────────────────────────────────────────────────╯${NC}"
     echo ""
     echo -e "${CYAN}${BOLD}🌐 Access your Nextcloud installation:${NC}"
     echo -e "   ${ARROW} HTTP:  ${WHITE}http://$DOMAIN${NC}"
