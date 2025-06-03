@@ -35,8 +35,8 @@ show_banner() {
     clear
     echo -e "${PURPLE}${BOLD}"
     echo "══════════════════════════════════════════════════════════════════════"
-    echo "                    ${CLOUD} NEXTCLOUD PROFESSIONAL INSTALLER ${CLOUD}"
-    echo "                                  Version 2.1"
+    echo "                  ${CLOUD} NEXTCLOUD PROFESSIONAL INSTALLER ${CLOUD}"
+    echo "                               Version 2.1"
     echo "══════════════════════════════════════════════════════════════════════"
     echo -e "${NC}"
     echo -e "${CYAN}${BOLD}Features:${NC}"
@@ -160,7 +160,7 @@ show_main_menu() {
         show_banner
         
         echo -e "${PURPLE}${BOLD}╭────────────────────────────────────────────────────────────────────╮${NC}"
-        echo -e "${WHITE}${BOLD}│ ${STAR}        MAIN MENU${NC}"
+        echo -e "${WHITE}${BOLD}                              ${STAR} MAIN MENU${NC}"
         echo -e "${PURPLE}${BOLD}╰────────────────────────────────────────────────────────────────────╯${NC}"
         echo ""
         echo -e "  ${GREEN}${BOLD}1)${NC} ${CLOUD} Install Nextcloud"
