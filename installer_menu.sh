@@ -126,6 +126,13 @@ show_menu() {
     echo ""
 }
 
+# Fungsi untuk membaca parameter dari file konfigurasi
+    get_config_value() {
+       local key=$1
+       local value=$(grep "'$key'" $CONFIG_FILE | awk -F "=> " '{print $2}' | tr -d "', ")
+       echo $value
+}
+
 # Check root privileges
 check_root() {
     if [ "$(id -u)" != "0" ]; then
@@ -216,13 +223,6 @@ backup_nextcloud() {
 
     # Membuat direktori backup jika belum ada
     mkdir -p $BACKUP_DIR
-
-    # Fungsi untuk membaca parameter dari file konfigurasi
-    get_config_value() {
-       local key=$1
-       local value=$(grep "'$key'" $CONFIG_FILE | awk -F "=> " '{print $2}' | tr -d "', ")
-       echo $value
-    }
 
    # Membaca informasi database dari config.php
    DB_NAME=$(get_config_value "dbname")
